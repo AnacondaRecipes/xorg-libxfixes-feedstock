@@ -3,7 +3,6 @@
 {% set name = "xorg-" ~ xorg_name %}
 {% set version = "6.0.1" %}
 {% set sha256 = "b695f93cd2499421ab02d22744458e650ccc88c1d4c8130d60200213abc02d58" %}
-{% set am_version = "1.16" %} # keep synchronized with build.sh
 
 package:
   name: {{ name|lower }}
@@ -15,6 +14,8 @@ source:
 
 build:
   number: 0
+  # xorg-libxdmcp, libxcb, libx11, libice aren't available on Windows because their dependencies clash with m2/msys2 and mingw64/ucrt64 toolchains.
+  skip: true  # [win]
   run_exports:
     - {{ pin_subpackage(name|lower) }}
 
@@ -57,10 +58,12 @@ test:
 
 about:
   home: https://www.x.org/
+  dev_url: https://gitlab.freedesktop.org/xorg/lib/libxfixes
+  doc_url: https://gitlab.freedesktop.org/xorg/lib/libxfixes
   license: MIT
   license_family: MIT
   license_file: COPYING
-  summary: 'The X.org library for simple protocol fixes.'
+  summary: The X.org library for simple protocol fixes.
 
 extra:
   recipe-maintainers:
