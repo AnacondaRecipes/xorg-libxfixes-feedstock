@@ -1,5 +1,4 @@
 {% set xorg_name = "libXfixes" %}
-{% set xorg_category = "lib" %}
 {% set name = "xorg-" ~ xorg_name %}
 {% set version = "6.0.2" %}
 
@@ -8,7 +7,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://www.x.org/releases/individual/{{ xorg_category }}/{{ xorg_name }}-{{ version }}.tar.xz
+  url: https://www.x.org/releases/individual/lib/{{ xorg_name }}-{{ version }}.tar.xz
   sha256: 39f115d72d9c5f8111e4684164d3d68cc1fd21f9b27ff2401b08fddfc0f409ba
 
 build:
@@ -20,7 +19,7 @@ build:
 
 requirements:
   build:
-    - {{ stdlib("c") }}
+    - {{ stdlib('c') }}
     - {{ compiler("c") }}
     - pkg-config
     - gnuconfig
