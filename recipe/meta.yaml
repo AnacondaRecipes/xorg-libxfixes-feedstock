@@ -1,5 +1,4 @@
-{% set xorg_name = "libXfixes" %}
-{% set name = "xorg-" ~ xorg_name %}
+{% set name = "xorg-libXfixes" %}
 {% set version = "6.0.2" %}
 
 package:
@@ -7,7 +6,7 @@ package:
   version: {{ version }}
 
 source:
-  url: https://www.x.org/releases/individual/lib/{{ xorg_name }}-{{ version }}.tar.xz
+  url: https://www.x.org/releases/individual/lib/{{ name.split('-')[1] }}-{{ version }}.tar.xz
   sha256: 39f115d72d9c5f8111e4684164d3d68cc1fd21f9b27ff2401b08fddfc0f409ba
 
 build:
@@ -20,7 +19,7 @@ build:
 requirements:
   build:
     - {{ stdlib('c') }}
-    - {{ compiler("c") }}
+    - {{ compiler('c') }}
     - pkg-config
     - gnuconfig
     - make
@@ -29,22 +28,17 @@ requirements:
     - gettext
     - libtool
   host:
-    - pthread-stubs
-    - xorg-xorgproto
-    - xorg-libx11 >=1.6,<2
-    # Additional constraintless xorg-libx11 dep below is for conda-build to add potential pinning to.
-    - xorg-libx11
-    - xorg-util-macros
+    - pthread-stubs ==0.3
+    - xorg-xorgproto {{ xorg_xorgproto }}
+    - xorg-libx11 {{ xorg_libx11 }}
+    - xorg-util-macros ==1.20.2
   run:
     - {{ pin_compatible('xorg-libx11') }}
 
 test:
   commands:
-    {% set lib_idents = [ "Xfixes" ] %}
-    {% for lib_ident in lib_idents %}
-    - test -f $PREFIX/lib/lib{{ lib_ident }}.dylib  # [osx]
-    - test -f $PREFIX/lib/lib{{ lib_ident }}.so     # [linux]
-    {% endfor %}
+    - test -f $PREFIX/lib/libXfixes.dylib  # [osx]
+    - test -f $PREFIX/lib/libXfixes.so     # [linux]
 
 about:
   home: https://www.x.org/
@@ -54,6 +48,8 @@ about:
   license_family: MIT
   license_file: COPYING
   summary: The X.org library for simple protocol fixes.
+  description: |
+    The X.org library for simple protocol fixes
 
 extra:
   recipe-maintainers:
